@@ -324,6 +324,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 168848173603641609, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 1050
+      objectReference: {fileID: 0}
+    - target: {fileID: 168848173603641609, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 421
+      objectReference: {fileID: 0}
+    - target: {fileID: 4101763367135284665, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 81.00003
+      objectReference: {fileID: 0}
     - target: {fileID: 5474322643121108203, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
         type: 3}
       propertyPath: cameraShutterAudio
@@ -333,6 +348,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UI_Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 6206005521491851798, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6206005521491851882, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
         type: 3}
@@ -453,6 +473,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8895420496909987204, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 57
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -660,8 +685,8 @@ GameObject:
   - component: {fileID: 1354141929}
   - component: {fileID: 1354141928}
   - component: {fileID: 1354141927}
-  - component: {fileID: 1354141931}
   - component: {fileID: 1354141932}
+  - component: {fileID: 1354141933}
   m_Layer: 0
   m_Name: AR Camera
   m_TagString: Untagged
@@ -785,7 +810,15 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1659859599}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1354141931
+--- !u!81 &1354141932
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1354141925}
+  m_Enabled: 1
+--- !u!114 &1354141933
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -829,14 +862,6 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
---- !u!81 &1354141932
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1354141925}
-  m_Enabled: 1
 --- !u!1 &1659859597
 GameObject:
   m_ObjectHideFlags: 0
