@@ -324,21 +324,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 168848173603641609, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 1050
-      objectReference: {fileID: 0}
-    - target: {fileID: 168848173603641609, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 421
-      objectReference: {fileID: 0}
-    - target: {fileID: 4101763367135284665, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 81.00003
-      objectReference: {fileID: 0}
     - target: {fileID: 5474322643121108203, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
         type: 3}
       propertyPath: cameraShutterAudio
@@ -348,11 +333,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UI_Canvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 6206005521491851798, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6206005521491851882, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
         type: 3}
@@ -453,31 +433,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6206005521602948445, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6206005521602948445, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
-        type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6206005521602948445, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6206005521602948445, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8895420496909987204, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 57
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
