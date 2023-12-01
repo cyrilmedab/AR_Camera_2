@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38f45c9d14fb9884e9eb79bc52f65317, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minimumDistance: 0.2
+  minimumDistance: 1
   maximumTime: 1
   directionThreshold: 0.9
 --- !u!114 &57564133
@@ -432,6 +432,26 @@ PrefabInstance:
     - target: {fileID: 6206005521491851882, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6206005521602948445, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6206005521602948445, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6206005521602948445, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6206005521602948445, guid: 9d98fc7d8cc1ded48ae44f3b39659593,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
