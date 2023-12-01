@@ -36,12 +36,22 @@ public class RecordButton : MonoBehaviour
 
     public async void SwapSprite()
     {
-        //SetSpriteAlpha(255f);
-        await Utils.FadeSprite(_buttonImage, 0f, fadeTime);
+        await FadeOutButton();
+        await FadeInButton();
+    }
 
+    public async Task<Task> FadeOutButton()
+    {
+        await Utils.FadeSprite(_buttonImage, 0f, fadeTime);
+        return Task.CompletedTask;
+    }
+
+    public async Task<Task> FadeInButton()
+    {
         if (_buttonImage.sprite == startUI) _buttonImage.sprite = stopUI;
         else _buttonImage.sprite = startUI;
 
         await Utils.FadeSprite(_buttonImage, 1f, fadeTime);
+        return Task.CompletedTask;
     }
 }

@@ -1064,18 +1064,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3317845383031002038}
-        m_TargetAssemblyTypeName: RecordButton, Assembly-CSharp
-        m_MethodName: TestClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 5474322643121108203}
         m_TargetAssemblyTypeName: PhotoCapture, Assembly-CSharp
         m_MethodName: CapturePhoto
@@ -1115,6 +1103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55353a8d6d961d84db9bb792ec89853a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  recordButton: {fileID: 3317845383031002038}
   photoDisplayArea: {fileID: 8819635858179169352}
   polaroidFrame: {fileID: 9174156032593268560}
   photoDevelopTime: 3
@@ -1871,7 +1860,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &168848173603641609
 RectTransform:
   m_ObjectHideFlags: 0

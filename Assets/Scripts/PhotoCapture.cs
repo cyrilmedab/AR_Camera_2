@@ -6,6 +6,10 @@ using TMPro;
 
 public class PhotoCapture : MonoBehaviour
 {
+    [Header("Photo Controls")]
+    [SerializeField]
+    private RecordButton recordButton;
+
     [Header("Photo Display")]
     [SerializeField]
     private Image photoDisplayArea;
@@ -51,6 +55,9 @@ public class PhotoCapture : MonoBehaviour
         // Starts the first half of the camera flash image, making it solid white
         cameraFlash.gameObject.SetActive(true);
         await Utils.FadeSprite(cameraFlash, 1f, flashTime);
+
+        // Removes (makes completely transparent) the record button UI so it isn't capture in the photo
+        await recordButton.FadeOutButton();
 
         // turned off briefly so we don't screen capture the flash (turned back on in the CapturePhotoCoroutine)
         cameraFlash.gameObject.SetActive(false);
@@ -111,6 +118,9 @@ public class PhotoCapture : MonoBehaviour
         photoDisplayArea.gameObject.SetActive(false);
         fileNameText.text = "";
         fileNameText.enabled = false;
+
+        // Returns the Record Button to the screen after we remove the polaroid
+        recordButton.FadeInButton();
     }
 
 }
