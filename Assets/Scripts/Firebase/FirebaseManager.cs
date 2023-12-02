@@ -9,7 +9,7 @@ using Firebase.Extensions;
 [DefaultExecutionOrder(-2)]
 public class FirebaseManager : MonoBehaviour
 {
-    public static FirebaseManager Instance { get; private set; };
+    public static FirebaseManager Instance { get; private set; }
 
     private FirebaseDatabase _database;
     private DatabaseReference _databaseReference;

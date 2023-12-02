@@ -14,11 +14,14 @@ public class GalleryManager : MonoBehaviour
         GetAllKeys();
     }
 
-    private void GetAllKeys()
+    private async void GetAllKeys()
     {
+        DataSnapshot imagesSnapshot = await FirebaseManager.Instance.GetDataSnapshot(FirebaseManager.Instance.userDatabaseImages);
 
-
-        //foreach (var image in FirebaseManager.Instance.userDatabaseRef.Child(FirebaseManager.Instance.dbImgName))
+        foreach (DataSnapshot image in imagesSnapshot.Children)
+        {
+            Debug.Log(image.Key);
+        }
       
     }
 
