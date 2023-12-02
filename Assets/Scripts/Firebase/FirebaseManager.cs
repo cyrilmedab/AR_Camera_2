@@ -137,7 +137,16 @@ public class FirebaseManager : MonoBehaviour
 
     private async Task<string> GetDatabaseValue(DatabaseReference dbRef)
     {
-        string value = "";
+        DataSnapshot snapshot = await GetDataSnapshot(dbRef);
+        string value = snapshot.Value.ToString();
+
+        Debug.Log($"Retrieved value {value} from database key");
+        return value;
+    }
+
+    public async Task<DataSnapshot> GetDataSnapshot(DatabaseReference dbRef)
+    {
+        DataSnapshot snapshot = null;
 
         await dbRef.GetValueAsync().ContinueWithOnMainThread((Task<DataSnapshot> task) =>
         {
@@ -147,13 +156,12 @@ public class FirebaseManager : MonoBehaviour
             }
             else
             {
-                DataSnapshot snapshot = task.Result;
-                value = snapshot.Value.ToString();
-                Debug.Log($"Retrieved value {value} from database key");
+                snapshot = task.Result;
+                Debug.Log($"Retrieved Data Snapshot");
             }
         });
 
-        return value;
+        return snapshot;
     }
 
     private byte[] DownloadImageFromStorage(StorageReference imageReference) 
