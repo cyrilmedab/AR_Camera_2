@@ -6,6 +6,8 @@ using Firebase.Storage;
 using System.Dynamic;
 using System.Threading.Tasks;
 using TMPro;
+using System.Net.Http;
+using System;
 
 public class FirebaseManager : MonoBehaviour
 {
@@ -16,10 +18,15 @@ public class FirebaseManager : MonoBehaviour
     private StorageReference _storageReference;
 
     private string _userId;
+    private DatabaseReference _userDatabaseRef;
     private StorageReference _userStorageRef;
 
     [SerializeField]
     private TMP_InputField inputField;
+
+    private string _dbImgName = "images";
+    private string _strgImagePath = "gs://ar-camera-de5b2.appspot.com";
+
 
     private void Awake()
     {
@@ -36,6 +43,7 @@ public class FirebaseManager : MonoBehaviour
         _storageReference = _storage.RootReference;
 
         _userId = SystemInfo.deviceUniqueIdentifier;
+        _userDatabaseRef = _databaseReference.Child(_userId);
         _userStorageRef = _storageReference.Child(_userId);
 
         CreateNewUser();
@@ -72,21 +80,77 @@ public class FirebaseManager : MonoBehaviour
                     StorageMetadata metadata = task.Result;
                     string md5Hash = metadata.Md5Hash;
                     Debug.Log("Finished Uploading, md5 hash = " + md5Hash);
+
                 }
             });
 
+        StoreDownloadUrlInDatabase(newUpload);
         return Task.CompletedTask;
+    }
+
+    private void StoreDownloadUrlInDatabase(StorageReference reference)
+    {
+        string downloadUrl = GetDownloadUrlFromStorage(reference);
+        _userDatabaseRef.Child(_dbImgName).Child(downloadUrl).SetValueAsync("0");
+    }
+
+    private string GetDownloadUrlFromStorage(StorageReference reference)
+    {
+        string baseUrl = _strgImagePath + reference.Path;
+        Debug.Log($"The base path is {baseUrl}");
+        return baseUrl;
+        
+        //string downloadUrl = "";
+
+        //await reference.GetDownloadUrlAsync().ContinueWith((Task<Uri> task) =>
+        //{
+        //    if (task.IsFaulted || task.IsCanceled)
+        //    {
+        //        Debug.Log(task.Exception.ToString());
+        //    }
+        //    else
+        //    {
+        //        downloadUrl = task.Result.ToString();
+        //    }
+        //});
+
+        //Debug.Log($"Download: {downloadUrl}");
+        //return downloadUrl;
     }
 
     #endregion
 
-    #region
+    #region Retrieve Stored Images
 
     private void DownloadAllImages()
     {
        // var root = _userStorageRef.listAll();
     }
 
+    /*
+    private async Task<List<FileMetadata>> GetMetadataList(string path)
+    {
+        const string baseApiUrl = "https://firebasestorage.googleapis.com/v0/b/";
+        const string projectId = "ar-camera-de5b2";
+
+        string userImageUrl = $"{baseApiUrl}{projectId}/o?prefix={path}";
+
+        using (HttpClient client = new HttpClient())
+        using (HttpResponseMessage response = await client.GetAsync(url))
+        using (HttpContent content = response.Content)
+        {
+            // Read the response body
+            string responseText = await content.ReadAsStringAsync();
+
+            // Deserialize the JSON response
+            ListFilesResponse responseData = JsonConvert.DeserializeObject<ListFilesResponse>(responseText);
+
+            // Return the list of files
+            return responseData.Files;
+        }
+
+    }
+    */
     private byte[] DownloadImage(StorageReference imageReference) 
     {
         int max_size = 1024 * 1024; // 1MB
@@ -107,6 +171,17 @@ public class FirebaseManager : MonoBehaviour
 
         return imageContents;
     }
-    
+
     #endregion
+
+    class FileMetadata
+    {
+        public string Name { get; set; }
+        public string DownloadUrl { get; set; }
+    }
+
+    class ListFilesResponse
+    {
+        public List<FileMetadata> Files { get; set; }
+    }
 }
