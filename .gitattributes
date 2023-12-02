@@ -43,7 +43,7 @@
 
 #Firebase
 *.so filter=lfs diff=lfs merge=lfs -text
-*.bundlefilter=lfs diff=lfs merge=lfs -text
+*.bundle filter=lfs diff=lfs merge=lfs -text
 
 #ETC
 *.a filter=lfs diff=lfs merge=lfs -text
