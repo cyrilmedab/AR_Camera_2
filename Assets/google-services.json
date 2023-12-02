@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "535803689514",
+    "firebase_url": "https://ar-camera-de5b2-default-rtdb.firebaseio.com",
+    "project_id": "ar-camera-de5b2",
+    "storage_bucket": "ar-camera-de5b2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:535803689514:android:5dbc98a6a410143eeaa153",
+        "android_client_info": {
+          "package_name": "com.CerealCode.ARCamera"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlsvafEBEb8dIG5gnsUwTtTEfmqwHGNzo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
