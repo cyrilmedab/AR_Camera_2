@@ -92,9 +92,9 @@ public class FirebaseManager : MonoBehaviour
     private void StoreDownloadUrlInDatabase(StorageReference reference)
     {
         string url = GetDownloadUrlFromStorage(reference);
-        string key = Utils.md5(url);
+        string hash = Utils.md5(url);
 
-        _userDatabaseRef.Child(_dbImgName).Child(key).SetValueAsync(url);
+        _userDatabaseRef.Child(_dbImgName).Child(hash).SetValueAsync(url);
     }
 
     private string GetDownloadUrlFromStorage(StorageReference reference)
@@ -111,14 +111,25 @@ public class FirebaseManager : MonoBehaviour
 
     public async void DownloadAllImages(string[] keys) 
     {
-       foreach (string key in keys) 
+        List<byte[]> images = new();
+        
+        foreach (string key in keys) 
         {
-            DatabaseReference dbRef = _userDatabaseRef.Child(key);
-            string imagePath = await GetDatabaseValue(dbRef);
-
-            //byte[] image = DownloadImage(imagePath);
+            images.Add(await DownloadImage(key));
         }
 
+        Debug.Log(images.Count);
+    }
+
+    public async Task<byte[]> DownloadImage(string key)
+    {
+        DatabaseReference dbRef = _userDatabaseRef.Child(key);
+        string imagePath = await GetDatabaseValue(dbRef);
+
+        StorageReference imageReference = _storage.GetReferenceFromUrl(imagePath);
+        byte[] image = DownloadImageFromStorage(imageReference);
+
+        return image;
     }
 
     private async Task<string> GetDatabaseValue(DatabaseReference dbRef)
@@ -142,7 +153,7 @@ public class FirebaseManager : MonoBehaviour
         return value;
     }
 
-    private byte[] DownloadImage(StorageReference imageReference) 
+    private byte[] DownloadImageFromStorage(StorageReference imageReference) 
     {
         int max_size = 1024 * 1024; // 1MB
         byte[] imageContents = new byte[64];
