@@ -18,13 +18,17 @@ public class FirebaseManager : MonoBehaviour
     private StorageReference _storageReference;
 
     private string _userId;
+
     public DatabaseReference userDatabaseRef;
+    public DatabaseReference userDatabaseImages;
+
     private StorageReference _userStorageRef;
+
 
     [SerializeField]
     private TMP_InputField inputField;
 
-    public string dbImgName = "images";
+    private string _dbImgName = "images";
     private string _strgImagePath = "gs://ar-camera-de5b2.appspot.com";
 
 
@@ -43,6 +47,8 @@ public class FirebaseManager : MonoBehaviour
 
         _userId = SystemInfo.deviceUniqueIdentifier;
         userDatabaseRef = _databaseReference.Child(_userId);
+        userDatabaseImages = userDatabaseRef.Child(_dbImgName);
+
         _userStorageRef = _storageReference.Child(_userId);
 
         CreateNewUser();
@@ -91,7 +97,7 @@ public class FirebaseManager : MonoBehaviour
         string url = GetDownloadUrlFromStorage(reference);
         string hash = Utils.md5(url);
 
-        userDatabaseRef.Child(dbImgName).Child(hash).SetValueAsync(url);
+        userDatabaseImages.Child(hash).SetValueAsync(url);
     }
 
     private string GetDownloadUrlFromStorage(StorageReference reference)
