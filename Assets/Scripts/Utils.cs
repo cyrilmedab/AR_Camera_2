@@ -6,6 +6,16 @@ public class Utils : MonoBehaviour
 {
     public static int RealMod(int num, int mod) => num - mod * Mathf.FloorToInt((float)num / mod);
 
+    #region Hashing
+    public static string md5(string str)
+    {
+        System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
+        byte[] bytes = encoding.GetBytes(str);
+        var sha = new System.Security.Cryptography.MD5CryptoServiceProvider();
+        return System.BitConverter.ToString(sha.ComputeHash(bytes));
+    }
+
+    #endregion
 
     #region UI Animations
 

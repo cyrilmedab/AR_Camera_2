@@ -90,35 +90,21 @@ public class FirebaseManager : MonoBehaviour
 
     private void StoreDownloadUrlInDatabase(StorageReference reference)
     {
-        string downloadUrl = GetDownloadUrlFromStorage(reference);
-        _userDatabaseRef.Child(_dbImgName).Child(downloadUrl).SetValueAsync("0");
+        string url = GetDownloadUrlFromStorage(reference);
+        string key = Utils.md5(url);
+
+        _userDatabaseRef.Child(_dbImgName).Child(key).SetValueAsync(url);
     }
 
     private string GetDownloadUrlFromStorage(StorageReference reference)
     {
-        string baseUrl = _strgImagePath + reference.Path;
-        Debug.Log($"The base path is {baseUrl}");
-        return baseUrl;
-        
-        //string downloadUrl = "";
-
-        //await reference.GetDownloadUrlAsync().ContinueWith((Task<Uri> task) =>
-        //{
-        //    if (task.IsFaulted || task.IsCanceled)
-        //    {
-        //        Debug.Log(task.Exception.ToString());
-        //    }
-        //    else
-        //    {
-        //        downloadUrl = task.Result.ToString();
-        //    }
-        //});
-
-        //Debug.Log($"Download: {downloadUrl}");
-        //return downloadUrl;
+        string gsUrl = _strgImagePath + reference.Path;
+        Debug.Log($"The storage url is {gsUrl}");
+        return gsUrl;
     }
 
     #endregion
+
 
     #region Retrieve Stored Images
 
