@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TMPro;
 using System.Net.Http;
 using System;
+using Firebase.Extensions;
 
 public class FirebaseManager : MonoBehaviour
 {
@@ -69,7 +70,7 @@ public class FirebaseManager : MonoBehaviour
         StorageReference newUpload = _userStorageRef.Child(fileName + ".png");
 
         await newUpload.PutBytesAsync(imageBytes)
-            .ContinueWith((Task<StorageMetadata> task) =>
+            .ContinueWithOnMainThread((Task<StorageMetadata> task) =>
             {
                 if (task.IsFaulted || task.IsCanceled)
                 {
@@ -108,41 +109,45 @@ public class FirebaseManager : MonoBehaviour
 
     #region Retrieve Stored Images
 
-    private void DownloadAllImages()
+    public async void DownloadAllImages(string[] keys) 
     {
-       // var root = _userStorageRef.listAll();
-    }
-
-    /*
-    private async Task<List<FileMetadata>> GetMetadataList(string path)
-    {
-        const string baseApiUrl = "https://firebasestorage.googleapis.com/v0/b/";
-        const string projectId = "ar-camera-de5b2";
-
-        string userImageUrl = $"{baseApiUrl}{projectId}/o?prefix={path}";
-
-        using (HttpClient client = new HttpClient())
-        using (HttpResponseMessage response = await client.GetAsync(url))
-        using (HttpContent content = response.Content)
+       foreach (string key in keys) 
         {
-            // Read the response body
-            string responseText = await content.ReadAsStringAsync();
+            DatabaseReference dbRef = _userDatabaseRef.Child(key);
+            string imagePath = await GetDatabaseValue(dbRef);
 
-            // Deserialize the JSON response
-            ListFilesResponse responseData = JsonConvert.DeserializeObject<ListFilesResponse>(responseText);
-
-            // Return the list of files
-            return responseData.Files;
+            //byte[] image = DownloadImage(imagePath);
         }
 
     }
-    */
+
+    private async Task<string> GetDatabaseValue(DatabaseReference dbRef)
+    {
+        string value = "";
+
+        await dbRef.GetValueAsync().ContinueWithOnMainThread((Task<DataSnapshot> task) =>
+        {
+            if (task.IsFaulted || task.IsCanceled)
+            {
+                Debug.Log(task.Exception);
+            }
+            else
+            {
+                DataSnapshot snapshot = task.Result;
+                value = snapshot.Value.ToString();
+                Debug.Log($"Retrieved value {value} from database key");
+            }
+        });
+
+        return value;
+    }
+
     private byte[] DownloadImage(StorageReference imageReference) 
     {
         int max_size = 1024 * 1024; // 1MB
         byte[] imageContents = new byte[64];
 
-        imageReference.GetBytesAsync(max_size).ContinueWith((Task<byte[]> task) =>
+        imageReference.GetBytesAsync(max_size).ContinueWithOnMainThread((Task<byte[]> task) =>
         {
             if (task.IsFaulted || task.IsCanceled)
             {
@@ -160,14 +165,4 @@ public class FirebaseManager : MonoBehaviour
 
     #endregion
 
-    class FileMetadata
-    {
-        public string Name { get; set; }
-        public string DownloadUrl { get; set; }
-    }
-
-    class ListFilesResponse
-    {
-        public List<FileMetadata> Files { get; set; }
-    }
 }
