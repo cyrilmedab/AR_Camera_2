@@ -1,18 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Firebase.Database;
 using Firebase.Storage;
-using System.Dynamic;
 using System.Threading.Tasks;
 using TMPro;
-using System.Net.Http;
-using System;
 using Firebase.Extensions;
 
 [DefaultExecutionOrder(-2)]
 public class FirebaseManager : MonoBehaviour
 {
+    public static FirebaseManager Instance { get; private set; };
+
     private FirebaseDatabase _database;
     private DatabaseReference _databaseReference;
 
@@ -20,18 +18,21 @@ public class FirebaseManager : MonoBehaviour
     private StorageReference _storageReference;
 
     private string _userId;
-    private DatabaseReference _userDatabaseRef;
+    public DatabaseReference userDatabaseRef;
     private StorageReference _userStorageRef;
 
     [SerializeField]
     private TMP_InputField inputField;
 
-    private string _dbImgName = "images";
+    public string dbImgName = "images";
     private string _strgImagePath = "gs://ar-camera-de5b2.appspot.com";
 
 
     private void Awake()
     {
+        if (Instance != null && Instance != this) Destroy(this);
+        else Instance = this;
+
         inputField.onEndEdit.AddListener(delegate { UploadImage(inputField.text); });
     
         _database = FirebaseDatabase.DefaultInstance;
@@ -41,7 +42,7 @@ public class FirebaseManager : MonoBehaviour
         _storageReference = _storage.RootReference;
 
         _userId = SystemInfo.deviceUniqueIdentifier;
-        _userDatabaseRef = _databaseReference.Child(_userId);
+        userDatabaseRef = _databaseReference.Child(_userId);
         _userStorageRef = _storageReference.Child(_userId);
 
         CreateNewUser();
@@ -90,7 +91,7 @@ public class FirebaseManager : MonoBehaviour
         string url = GetDownloadUrlFromStorage(reference);
         string hash = Utils.md5(url);
 
-        _userDatabaseRef.Child(_dbImgName).Child(hash).SetValueAsync(url);
+        userDatabaseRef.Child(dbImgName).Child(hash).SetValueAsync(url);
     }
 
     private string GetDownloadUrlFromStorage(StorageReference reference)
@@ -119,7 +120,7 @@ public class FirebaseManager : MonoBehaviour
 
     public async Task<byte[]> DownloadImage(string key)
     {
-        DatabaseReference dbRef = _userDatabaseRef.Child(key);
+        DatabaseReference dbRef = userDatabaseRef.Child(key);
         string imagePath = await GetDatabaseValue(dbRef);
 
         StorageReference imageReference = _storage.GetReferenceFromUrl(imagePath);
