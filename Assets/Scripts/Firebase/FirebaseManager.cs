@@ -32,11 +32,7 @@ public class FirebaseManager : MonoBehaviour
     private void Awake()
     {
         inputField.onEndEdit.AddListener(delegate { UploadImage(inputField.text); });
-    }
-
-    // Start is called before the first frame update
-    private void Start()
-    {
+    
         _database = FirebaseDatabase.DefaultInstance;
         _databaseReference = _database.RootReference;
 
