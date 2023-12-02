@@ -10,6 +10,7 @@ using System.Net.Http;
 using System;
 using Firebase.Extensions;
 
+[DefaultExecutionOrder(-2)]
 public class FirebaseManager : MonoBehaviour
 {
     private FirebaseDatabase _database;
@@ -44,7 +45,6 @@ public class FirebaseManager : MonoBehaviour
         _userStorageRef = _storageReference.Child(_userId);
 
         CreateNewUser();
-
     }
 
     private void CreateNewUser()
