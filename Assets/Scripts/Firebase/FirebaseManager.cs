@@ -61,15 +61,15 @@ public class FirebaseManager : MonoBehaviour
         StorageReference newUpload = _userStorageRef.Child(fileName + ".png");
 
         await newUpload.PutBytesAsync(imageBytes)
-            .ContinueWith((Task<StorageMetadata> Task) =>
+            .ContinueWith((Task<StorageMetadata> task) =>
             {
-                if (Task.IsFaulted || Task.IsCanceled)
+                if (task.IsFaulted || task.IsCanceled)
                 {
-                    Debug.Log(Task.Exception.ToString());
+                    Debug.Log(task.Exception.ToString());
                 }
                 else
                 {
-                    StorageMetadata metadata = Task.Result;
+                    StorageMetadata metadata = task.Result;
                     string md5Hash = metadata.Md5Hash;
                     Debug.Log("Finished Uploading, md5 hash = " + md5Hash);
                 }
@@ -78,5 +78,35 @@ public class FirebaseManager : MonoBehaviour
         return Task.CompletedTask;
     }
 
+    #endregion
+
+    #region
+
+    private void DownloadAllImages()
+    {
+       // var root = _userStorageRef.listAll();
+    }
+
+    private byte[] DownloadImage(StorageReference imageReference) 
+    {
+        int max_size = 1024 * 1024; // 1MB
+        byte[] imageContents = new byte[64];
+
+        imageReference.GetBytesAsync(max_size).ContinueWith((Task<byte[]> task) =>
+        {
+            if (task.IsFaulted || task.IsCanceled)
+            {
+                Debug.Log(task.Exception);
+            }
+            else
+            {
+                imageContents = task.Result;
+                Debug.Log("Downloaded 1 image");
+            }
+        });
+
+        return imageContents;
+    }
+    
     #endregion
 }
