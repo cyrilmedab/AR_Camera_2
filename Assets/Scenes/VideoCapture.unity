@@ -1138,16 +1138,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GalleryCanvas
       objectReference: {fileID: 0}
-    - target: {fileID: 1695139651697969069, guid: 9e291c60d6268ed459b60ba127bd8379,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4337496879053802302, guid: 9e291c60d6268ed459b60ba127bd8379,
-        type: 3}
-      propertyPath: cameraShutterAudio
-      value: 
-      objectReference: {fileID: 1067523489}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
