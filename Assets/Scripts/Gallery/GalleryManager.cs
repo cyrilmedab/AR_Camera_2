@@ -6,24 +6,23 @@ using UnityEngine;
 
 public class GalleryManager : MonoBehaviour
 {
-    List<string> dbImageKeys = new();
+    private List<string> dbImageKeys = new();
 
     // Start is called before the first frame update
     void Start()
     {
-        GetAllKeys();
+        GetAllKeys(FirebaseManager.Instance.userDatabaseImages);
     }
 
-    private async void GetAllKeys()
+    private async void GetAllKeys(DatabaseReference dbRef)
     {
-        DataSnapshot imagesSnapshot = await FirebaseManager.Instance.GetDataSnapshot(FirebaseManager.Instance.userDatabaseImages);
+        DataSnapshot imagesSnapshot = await FirebaseManager.Instance.GetDataSnapshot(dbRef);
 
         foreach (DataSnapshot image in imagesSnapshot.Children)
         {
-            Debug.Log(image.Key);
+            string key = image.Key.ToString();
+            dbImageKeys.Add(key);
         }
-      
     }
 
-    
 }
