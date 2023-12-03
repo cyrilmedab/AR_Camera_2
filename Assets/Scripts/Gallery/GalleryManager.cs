@@ -29,7 +29,7 @@ public class GalleryManager : MonoBehaviour
         FirebaseManager.Instance.userDatabaseImages.ChildAdded += AddKey;
     }
 
-    private void AddKey(object sender, ChildChangedEventArgs args)
+    public void AddKey(object sender, ChildChangedEventArgs args)
     {
         if (args.DatabaseError != null)
         {
@@ -65,6 +65,8 @@ public class GalleryManager : MonoBehaviour
         {
             galleryPolaroid.SetNameAndImage(photo);
         }
+
+        galleryPolaroid.dbHash = key;
     }
 
 

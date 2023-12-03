@@ -67,7 +67,7 @@ public class FirebaseManager : MonoBehaviour
         inputField.text = "";
     }
 
-    private async Task<Task> UploadImageToStorage(Texture2D _image, string fileName)
+    public async Task<string> UploadImageToStorage(Texture2D _image, string fileName)
     {
         byte[] imageBytes = _image.EncodeToPNG();
         StorageReference newUpload = _userStorageRef.Child(fileName + ".png");
@@ -88,16 +88,17 @@ public class FirebaseManager : MonoBehaviour
                 }
             });
 
-        StoreDownloadUrlInDatabase(newUpload);
-        return Task.CompletedTask;
+        string hash = StoreDownloadUrlInDatabase(newUpload);
+        return hash;
     }
 
-    private void StoreDownloadUrlInDatabase(StorageReference reference)
+    private string StoreDownloadUrlInDatabase(StorageReference reference)
     {
         string url = GetDownloadUrlFromStorage(reference);
         string hash = Utils.md5(url);
 
         userDatabaseImages.Child(hash).SetValueAsync(url);
+        return hash;
     }
 
     private string GetDownloadUrlFromStorage(StorageReference reference)
@@ -191,4 +192,47 @@ public class FirebaseManager : MonoBehaviour
 
     #endregion
 
+    #region Delete Stored Images
+
+    public async Task<Task> DeleteStoredData(string key)
+    {
+        DatabaseReference dbRef = userDatabaseImages.Child(key);
+        string imagePath = await GetDatabaseValue(dbRef);
+        await DeleteDatabaseRef(dbRef);
+
+        StorageReference strgReference = _storage.GetReferenceFromUrl(imagePath);
+        await DeleteStorageRef(strgReference);
+
+        return Task.CompletedTask;
+    }
+
+    private async Task<Task> DeleteDatabaseRef(DatabaseReference dbRef)
+    {
+        await dbRef.RemoveValueAsync().ContinueWithOnMainThread((Task task) =>
+        {
+            if (task.IsFaulted || task.IsCanceled)
+            {
+                Debug.Log(task.Exception);
+            }
+            else Debug.Log("File deleted from storage successfully");
+        });
+
+        return Task.CompletedTask;
+    }
+
+    private async Task<Task> DeleteStorageRef(StorageReference strgRef)
+    {
+        await strgRef.DeleteAsync().ContinueWithOnMainThread((Task task) =>
+        {
+            if (task.IsFaulted || task.IsCanceled)
+            {
+                Debug.Log(task.Exception);
+            }
+            else Debug.Log("File deleted from storage successfully");
+        });
+
+        return Task.CompletedTask;
+    }
+
+    #endregion
 }
