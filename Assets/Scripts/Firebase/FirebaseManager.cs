@@ -112,7 +112,7 @@ public class FirebaseManager : MonoBehaviour
 
     #region Retrieve Stored Images
 
-    public async void DownloadAllImages(string[] keys) 
+    public async Task<List<(string, byte[])>> DownloadAllImages(List<string> keys) 
     {
         List<(string, byte[])> images = new();
         
@@ -122,6 +122,7 @@ public class FirebaseManager : MonoBehaviour
         }
 
         Debug.Log(images.Count);
+        return images;
     }
 
     public async Task<(string, byte[])> DownloadImage(string key)

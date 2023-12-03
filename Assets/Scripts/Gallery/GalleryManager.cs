@@ -6,6 +6,9 @@ using UnityEngine;
 
 public class GalleryManager : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject galleryPolaroid;
+
     private List<string> dbImageKeys = new();
 
     // Start is called before the first frame update
@@ -50,4 +53,9 @@ public class GalleryManager : MonoBehaviour
         }
     }
 
+    public async void PopulateGallery()
+    {
+        // Gives us the image data paired with their names
+        List<(string, byte[])> images = await FirebaseManager.Instance.DownloadAllImages(dbImageKeys);
+    }
 }
