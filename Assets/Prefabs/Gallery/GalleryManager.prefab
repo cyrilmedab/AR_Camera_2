@@ -44,3 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9243d244f028d3a4cb58d9c0de9498c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  galleryScrollContent: {fileID: 0}
+  galleryPolaroidPrefab: {fileID: 7197151378875531589, guid: 020d4a14c5623bd44863d89d49400220,
+    type: 3}
