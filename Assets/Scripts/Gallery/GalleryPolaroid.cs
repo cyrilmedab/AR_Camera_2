@@ -15,7 +15,8 @@ public class GalleryPolaroid : MonoBehaviour
     public void SetNameAndImage((string, byte[]) photo)
     {
         var (name, image) = photo;
-        photoName.text = name;
+        // Sliced to remove the ".png" from the file name
+        photoName.text = name[0..^4];
 
         SetImage(image);
     }
