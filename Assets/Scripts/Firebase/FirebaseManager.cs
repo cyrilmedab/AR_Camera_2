@@ -141,6 +141,7 @@ public class FirebaseManager : MonoBehaviour
     private async Task<string> GetDatabaseValue(DatabaseReference dbRef)
     {
         DataSnapshot snapshot = await GetDataSnapshot(dbRef);
+        Debug.Log(snapshot);
         string value = snapshot.Value.ToString();
 
         Debug.Log($"Retrieved value {value} from database key");

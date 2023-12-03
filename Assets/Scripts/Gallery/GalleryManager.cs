@@ -3,9 +3,13 @@ using Firebase.Extensions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GalleryManager : MonoBehaviour
 {
+    [SerializeField]
+    private Transform galleryScrollContent;
+
     [SerializeField]
     private GameObject galleryPolaroidPrefab;
 
@@ -40,6 +44,7 @@ public class GalleryManager : MonoBehaviour
         string key = snapshot.Key.ToString();
         dbImageKeys.Add(key);
 
+        PopulateGallery(key);
 
         Debug.Log(dbImageKeys.Count);
         PrintList();
@@ -53,20 +58,17 @@ public class GalleryManager : MonoBehaviour
         }
     }
 
-    public async void PopulateGallery()
+    public async void PopulateGallery(string key) 
     {
-        // Gives us the image data paired with their names
-        List<(string, byte[])> images = await FirebaseManager.Instance.DownloadAllImages(dbImageKeys);
+        (string, byte[]) photo = await FirebaseManager.Instance.DownloadImage(key);
 
-        foreach (var image in images)
+        GameObject newPolaroid = Instantiate(galleryPolaroidPrefab, galleryScrollContent);
+
+        if (newPolaroid.TryGetComponent<GalleryPolaroid>(out GalleryPolaroid galleryPolaroid))
         {
-            // code to get new prefab 
-            var newPolaroid = galleryPolaroidPrefab;
-
-            if (newPolaroid.TryGetComponent<GalleryPolaroid>(out GalleryPolaroid polaroid))
-            {
-                polaroid.SetNameAndImage(image);
-            }
+            galleryPolaroid.SetNameAndImage(photo);
         }
     }
+
+
 }
