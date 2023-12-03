@@ -23,10 +23,11 @@ public class GalleryPolaroid : MonoBehaviour
 
     private void SetImage(byte[] image)
     {
+        Debug.Log(image);
         Texture2D imgTexture = new Texture2D(1, 1);
         imgTexture.LoadImage(image);
 
-        Sprite imgSprite = Sprite.Create(imgTexture, new Rect(0f, 0f, Screen.width, Screen.height)
+        Sprite imgSprite = Sprite.Create(imgTexture, new Rect(0f, 0f, imgTexture.width, imgTexture.height)
             , new Vector2(0.5f, 0.5f), 100.0f);
         photoImage.sprite = imgSprite;
     }
