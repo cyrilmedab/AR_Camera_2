@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class GalleryManager : MonoBehaviour
 {
     public static GalleryManager Instance { get; private set; }
+    public bool changingName = false;
 
     [SerializeField]
     private Transform galleryScrollContent;
@@ -31,6 +32,9 @@ public class GalleryManager : MonoBehaviour
 
     public void AddKey(object sender, ChildChangedEventArgs args)
     {
+        // We don't want to create a new polaroid if we're just changing the name
+        if (changingName) return;
+
         if (args.DatabaseError != null)
         {
             Debug.LogError(args.DatabaseError.Message);

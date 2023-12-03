@@ -38,19 +38,19 @@ public class GalleryPolaroid : MonoBehaviour
     public async void ChangeName()
     {
         // Prevents duplicate polaroids or new ones being created while we add and delete to the database
-        FirebaseManager.Instance.userDatabaseImages.ChildAdded -= GalleryManager.Instance.AddKey;
-
-        string newName = photoName.text;
+        GalleryManager.Instance.changingName = true;
 
         // Delete oldvalues from storage and database
         await FirebaseManager.Instance.DeleteStoredData(dbHash);
 
         // Update value in Storage and Database
+        string newName = photoName.text;
         dbHash = await FirebaseManager.Instance.UploadImageToStorage(photoImage.sprite.texture, newName);
-        
+
         //inputField.text = "";
 
-        // Reconnects the listener after we're done modifying the database and current polaroid
-        FirebaseManager.Instance.userDatabaseImages.ChildAdded += GalleryManager.Instance.AddKey;
+        // Reenables the polaroid-creation process for newly-added data points
+        GalleryManager.Instance.changingName = false;
+        Destroy(this.gameObject);
     }
 }
