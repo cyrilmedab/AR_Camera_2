@@ -13,7 +13,7 @@ public class GalleryPolaroid : MonoBehaviour
     private Image photoImage;
 
     [SerializeField]
-    private TextMeshProUGUI photoName;
+    private TMP_InputField photoName;
 
     public void SetNameAndImage((string, byte[]) photo)
     {
