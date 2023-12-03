@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -49,8 +50,10 @@ public class GalleryPolaroid : MonoBehaviour
 
         //inputField.text = "";
 
+        // arbitrary Delay because there was an issue with the changingName being set to false too quickly.
+        await Task.Delay(1000);
         // Reenables the polaroid-creation process for newly-added data points
         GalleryManager.Instance.changingName = false;
-        Destroy(this.gameObject);
+        //Destroy(this.gameObject);
     }
 }
