@@ -132,7 +132,7 @@ public class FirebaseManager : MonoBehaviour
 
         StorageReference imageReference = _storage.GetReferenceFromUrl(imagePath);
         string name = imageReference.Name;
-        byte[] image = DownloadImageFromStorage(imageReference);
+        byte[] image = await DownloadImageFromStorage(imageReference);
 
 
         return (name, image);
@@ -167,12 +167,12 @@ public class FirebaseManager : MonoBehaviour
         return snapshot;
     }
 
-    private byte[] DownloadImageFromStorage(StorageReference imageReference) 
+    private async Task<byte[]> DownloadImageFromStorage(StorageReference imageReference) 
     {
         int max_size = 1024 * 1024; // 1MB
-        byte[] imageContents = new byte[64];
+        byte[] imageContents = new byte[2];
 
-        imageReference.GetBytesAsync(max_size).ContinueWithOnMainThread((Task<byte[]> task) =>
+        await imageReference.GetBytesAsync(max_size).ContinueWithOnMainThread((Task<byte[]> task) =>
         {
             if (task.IsFaulted || task.IsCanceled)
             {
@@ -185,6 +185,7 @@ public class FirebaseManager : MonoBehaviour
             }
         });
 
+        Debug.Log($"The bytes length when received is ${imageContents.Length}");
         return imageContents;
     }
 
