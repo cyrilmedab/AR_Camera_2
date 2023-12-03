@@ -11,17 +11,42 @@ public class GalleryManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetAllKeys(FirebaseManager.Instance.userDatabaseImages);
+        FirebaseManager.Instance.userDatabaseImages.ChildAdded += AddKey;
     }
 
-    private async void GetAllKeys(DatabaseReference dbRef)
-    {
-        DataSnapshot imagesSnapshot = await FirebaseManager.Instance.GetDataSnapshot(dbRef);
+    //private async void GetAllKeys(DatabaseReference dbRef)
+    //{
+    //    DataSnapshot imagesSnapshot = await FirebaseManager.Instance.GetDataSnapshot(dbRef);
 
-        foreach (DataSnapshot image in imagesSnapshot.Children)
+    //    foreach (DataSnapshot image in imagesSnapshot.Children)
+    //    {
+    //        string key = image.Key.ToString();
+    //        dbImageKeys.Add(key);
+    //    }
+    //}
+
+    private void AddKey(object sender, ChildChangedEventArgs args)
+    {
+        if (args.DatabaseError != null)
         {
-            string key = image.Key.ToString();
-            dbImageKeys.Add(key);
+            Debug.LogError(args.DatabaseError.Message);
+            return;
+        }
+
+        DataSnapshot snapshot = args.Snapshot;
+        string key = snapshot.Key.ToString();
+        dbImageKeys.Add(key);
+
+
+        Debug.Log(dbImageKeys.Count);
+        PrintList();
+    }
+
+    private void PrintList()
+    {
+        foreach (string str in dbImageKeys)
+        {
+            Debug.Log(str);
         }
     }
 
