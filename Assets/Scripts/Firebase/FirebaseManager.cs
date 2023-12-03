@@ -114,7 +114,7 @@ public class FirebaseManager : MonoBehaviour
 
     public async void DownloadAllImages(string[] keys) 
     {
-        List<byte[]> images = new();
+        List<(string, byte[])> images = new();
         
         foreach (string key in keys) 
         {
@@ -124,15 +124,17 @@ public class FirebaseManager : MonoBehaviour
         Debug.Log(images.Count);
     }
 
-    public async Task<byte[]> DownloadImage(string key)
+    public async Task<(string, byte[])> DownloadImage(string key)
     {
         DatabaseReference dbRef = userDatabaseRef.Child(key);
         string imagePath = await GetDatabaseValue(dbRef);
 
         StorageReference imageReference = _storage.GetReferenceFromUrl(imagePath);
+        string name = imageReference.Name;
         byte[] image = DownloadImageFromStorage(imageReference);
 
-        return image;
+
+        return (name, image);
     }
 
     private async Task<string> GetDatabaseValue(DatabaseReference dbRef)
