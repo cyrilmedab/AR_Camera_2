@@ -127,7 +127,7 @@ public class FirebaseManager : MonoBehaviour
 
     public async Task<(string, byte[])> DownloadImage(string key)
     {
-        DatabaseReference dbRef = userDatabaseRef.Child(key);
+        DatabaseReference dbRef = userDatabaseImages.Child(key);
         string imagePath = await GetDatabaseValue(dbRef);
 
         StorageReference imageReference = _storage.GetReferenceFromUrl(imagePath);
@@ -142,6 +142,7 @@ public class FirebaseManager : MonoBehaviour
     {
         DataSnapshot snapshot = await GetDataSnapshot(dbRef);
         Debug.Log(snapshot);
+        Debug.Log(snapshot.Exists);
         string value = snapshot.Value.ToString();
 
         Debug.Log($"Retrieved value {value} from database key");
