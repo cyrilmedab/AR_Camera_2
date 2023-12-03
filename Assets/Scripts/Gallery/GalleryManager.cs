@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class GalleryManager : MonoBehaviour
 {
+    public static GalleryManager Instance { get; private set; }
+
     [SerializeField]
     private Transform galleryScrollContent;
 
@@ -15,22 +17,17 @@ public class GalleryManager : MonoBehaviour
 
     private List<string> dbImageKeys = new();
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        FirebaseManager.Instance.userDatabaseImages.ChildAdded += AddKey;
+        if (Instance != null && Instance != this) Destroy(this);
+        else Instance = this;
     }
 
-    //private async void GetAllKeys(DatabaseReference dbRef)
-    //{
-    //    DataSnapshot imagesSnapshot = await FirebaseManager.Instance.GetDataSnapshot(dbRef);
-
-    //    foreach (DataSnapshot image in imagesSnapshot.Children)
-    //    {
-    //        string key = image.Key.ToString();
-    //        dbImageKeys.Add(key);
-    //    }
-    //}
+    // Start is called before the first frame update
+    void Start()
+    { 
+        FirebaseManager.Instance.userDatabaseImages.ChildAdded += AddKey;
+    }
 
     private void AddKey(object sender, ChildChangedEventArgs args)
     {
