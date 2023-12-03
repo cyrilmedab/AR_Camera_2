@@ -7,7 +7,7 @@ using UnityEngine;
 public class GalleryManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject galleryPolaroid;
+    private GameObject galleryPolaroidPrefab;
 
     private List<string> dbImageKeys = new();
 
@@ -57,5 +57,16 @@ public class GalleryManager : MonoBehaviour
     {
         // Gives us the image data paired with their names
         List<(string, byte[])> images = await FirebaseManager.Instance.DownloadAllImages(dbImageKeys);
+
+        foreach (var image in images)
+        {
+            // code to get new prefab 
+            var newPolaroid = galleryPolaroidPrefab;
+
+            if (newPolaroid.TryGetComponent<GalleryPolaroid>(out GalleryPolaroid polaroid))
+            {
+                polaroid.SetNameAndImage(image);
+            }
+        }
     }
 }
