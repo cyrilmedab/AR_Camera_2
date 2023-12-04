@@ -1,4 +1,4 @@
- using System.Collections;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Threading.Tasks;
@@ -6,13 +6,14 @@ using TMPro;
 
 public class PhotoCapture : MonoBehaviour
 {
+    public static PhotoCapture Instance { get; private set; }
+
     [Header("Photo Controls")]
     [SerializeField]
     private RecordButton recordButton;
 
     [Header("Photo Display")]
-    [SerializeField]
-    private Image photoDisplayArea;
+    public Image photoDisplayArea;
     [SerializeField]
     private GameObject polaroidFrame;
     [SerializeField]
@@ -29,14 +30,18 @@ public class PhotoCapture : MonoBehaviour
     private AudioSource cameraShutterAudio;
 
     [Header("NamingTextField")]
-    [SerializeField]
-    private TMP_InputField fileNameText;
+    public TMP_InputField fileNameText;
 
     private Texture2D _screenCapture;
     private bool _savingPhoto;
 
+    private void Awake()
+    {
+        if (Instance != null && Instance != this) Destroy(this);
+        else Instance = this;
+    }
 
-    void Start()
+    private void Start()
     {
         // Gives us an empty Texture2D to start with
         _screenCapture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
@@ -116,7 +121,6 @@ public class PhotoCapture : MonoBehaviour
         _savingPhoto = false;
         polaroidFrame.SetActive(false);
         photoDisplayArea.gameObject.SetActive(false);
-        fileNameText.text = "";
         fileNameText.enabled = false;
 
         // Returns the Record Button to the screen after we remove the polaroid
