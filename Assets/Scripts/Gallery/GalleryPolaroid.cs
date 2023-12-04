@@ -29,7 +29,7 @@ public class GalleryPolaroid : MonoBehaviour
     {
         Debug.Log(image);
         Texture2D imgTexture = new Texture2D(1, 1);
-        imgTexture.LoadImage(image);
+        ImageConversion.LoadImage(imgTexture, image);
 
         Sprite imgSprite = Sprite.Create(imgTexture, new Rect(0f, 0f, imgTexture.width, imgTexture.height)
             , new Vector2(0.5f, 0.5f), 100.0f);

@@ -5,6 +5,7 @@ using Firebase.Storage;
 using System.Threading.Tasks;
 using TMPro;
 using Firebase.Extensions;
+using Unity.VisualScripting;
 
 [DefaultExecutionOrder(-2)]
 public class FirebaseManager : MonoBehaviour
@@ -36,9 +37,14 @@ public class FirebaseManager : MonoBehaviour
     {
         if (Instance != null && Instance != this) Destroy(this);
         else Instance = this;
+    }
+
+    private void Start()
+    {
+        //await UpdateGooglePlayServices();
 
         inputField.onEndEdit.AddListener(delegate { UploadImage(inputField.text); });
-    
+
         _database = FirebaseDatabase.DefaultInstance;
         _databaseReference = _database.RootReference;
 
@@ -50,13 +56,29 @@ public class FirebaseManager : MonoBehaviour
         userDatabaseImages = userDatabaseRef.Child(_dbImgName);
 
         _userStorageRef = _storageReference.Child(_userId);
-
-        CreateNewUser();
     }
 
-    private void CreateNewUser()
+    private async Task<Task> UpdateGooglePlayServices()
     {
-        _databaseReference.Child("users").Child(_userId).SetValueAsync("Laptop");
+        await Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task => {
+            var dependencyStatus = task.Result;
+            if (dependencyStatus == Firebase.DependencyStatus.Available)
+            {
+                // Create and hold a reference to your FirebaseApp,
+                // where app is a Firebase.FirebaseApp property of your application class.
+                var app = Firebase.FirebaseApp.DefaultInstance;
+
+                // Set a flag here to indicate whether Firebase is ready to use by your app.
+            }
+            else
+            {
+                UnityEngine.Debug.LogError(System.String.Format(
+                  "Could not resolve all Firebase dependencies: {0}", dependencyStatus));
+                // Firebase Unity SDK is not safe to use here.
+            }
+        });
+
+        return Task.CompletedTask;
     }
 
     #region Uploading
@@ -170,7 +192,7 @@ public class FirebaseManager : MonoBehaviour
 
     private async Task<byte[]> DownloadImageFromStorage(StorageReference imageReference) 
     {
-        int max_size = 1024 * 1024; // 1MB
+        int max_size = 10 * 1024 * 1024; // 10MB
         byte[] imageContents = new byte[2];
 
         await imageReference.GetBytesAsync(max_size).ContinueWithOnMainThread((Task<byte[]> task) =>

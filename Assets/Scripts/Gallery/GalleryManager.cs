@@ -16,8 +16,6 @@ public class GalleryManager : MonoBehaviour
     [SerializeField]
     private GameObject galleryPolaroidPrefab;
 
-    private List<string> dbImageKeys = new();
-
     private void Awake()
     {
         if (Instance != null && Instance != this) Destroy(this);
@@ -43,20 +41,8 @@ public class GalleryManager : MonoBehaviour
 
         DataSnapshot snapshot = args.Snapshot;
         string key = snapshot.Key.ToString();
-        dbImageKeys.Add(key);
 
         PopulateGallery(key);
-
-        Debug.Log(dbImageKeys.Count);
-        PrintList();
-    }
-
-    private void PrintList()
-    {
-        foreach (string str in dbImageKeys)
-        {
-            Debug.Log(str);
-        }
     }
 
     public async void PopulateGallery(string key) 
