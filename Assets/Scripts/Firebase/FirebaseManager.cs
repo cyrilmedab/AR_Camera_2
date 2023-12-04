@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TMPro;
 using Firebase.Extensions;
 using Unity.VisualScripting;
+using System.Threading;
 
 [DefaultExecutionOrder(-2)]
 public class FirebaseManager : MonoBehaviour
@@ -94,7 +95,10 @@ public class FirebaseManager : MonoBehaviour
         byte[] imageBytes = _image.EncodeToPNG();
         StorageReference newUpload = _userStorageRef.Child(fileName + ".png");
 
-        await newUpload.PutBytesAsync(imageBytes)
+        var imageMetadata = new MetadataChange();
+        imageMetadata.ContentType = "image/png";
+
+        await newUpload.PutBytesAsync(imageBytes, imageMetadata, null, CancellationToken.None)
             .ContinueWithOnMainThread((Task<StorageMetadata> task) =>
             {
                 if (task.IsFaulted || task.IsCanceled)
