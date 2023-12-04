@@ -11,29 +11,34 @@ public class GalleryPolaroid : MonoBehaviour
     public string dbHash;
 
     [SerializeField]
-    private Image photoImage;
+    private Image photoImageDisplay;
 
     [SerializeField]
-    private TMP_InputField photoName;
+    private TMP_InputField photoNameDisplay;
+
+    public string photoName;
+    public byte[] photoImage;
 
     public void SetNameAndImage((string, byte[]) photo)
     {
-        var (name, image) = photo;
-        // Sliced to remove the ".png" from the file name
-        photoName.text = name[0..^4];
+        var (full_name, image) = photo;
 
-        SetImage(image);
+        // Sliced to remove the ".png" from the file name
+        photoName = full_name[0..^4];
+        photoNameDisplay.text = photoName;
+
+        SetImage();
     }
 
-    private void SetImage(byte[] image)
+    private void SetImage()
     {
-        Debug.Log(image);
+        Debug.Log(photoImage);
         Texture2D imgTexture = new Texture2D(1, 1);
-        ImageConversion.LoadImage(imgTexture, image);
+        ImageConversion.LoadImage(imgTexture, photoImage);
 
         Sprite imgSprite = Sprite.Create(imgTexture, new Rect(0f, 0f, imgTexture.width, imgTexture.height)
             , new Vector2(0.5f, 0.5f), 100.0f);
-        photoImage.sprite = imgSprite;
+        photoImageDisplay.sprite = imgSprite;
     }
 
     public async void ChangeName()
@@ -45,8 +50,8 @@ public class GalleryPolaroid : MonoBehaviour
         await FirebaseManager.Instance.DeleteStoredData(dbHash);
 
         // Update value in Storage and Database
-        string newName = photoName.text;
-        dbHash = await FirebaseManager.Instance.UploadImageToStorage(photoImage.sprite.texture, newName);
+        photoName = photoNameDisplay.text;
+        dbHash = await FirebaseManager.Instance.UploadImageToStorage(photoImageDisplay.sprite.texture, photoName);
 
         //inputField.text = "";
 
