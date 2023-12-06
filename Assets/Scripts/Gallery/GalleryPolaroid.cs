@@ -4,38 +4,54 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
+using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
-public class GalleryPolaroid : MonoBehaviour
+public class GalleryPolaroid : MonoBehaviour, IPointerClickHandler
 {
     public string dbHash;
 
     [SerializeField]
-    private Image photoImage;
+    private Image photoImageDisplay;
 
     [SerializeField]
-    private TMP_InputField photoName;
+    private TMP_InputField photoNameDisplay;
+
+    public string photoName;
+    public byte[] photoImage;
+
+    private void Start()
+    {
+        //FullScreenImage.Instance.gameObject.TryGetComponent<Image>(out fullScreenImage);
+    }
 
     public void SetNameAndImage((string, byte[]) photo)
     {
-        var (name, image) = photo;
-        // Sliced to remove the ".png" from the file name
-        photoName.text = name[0..^4];
+        var (full_name, image) = photo;
+        photoImage = image;
 
-        SetImage(image);
+        // Sliced to remove the ".png" from the file name
+        photoName = full_name[0..^4];
+        photoNameDisplay.text = photoName;
+
+        Debug.Log($"The size of the arry in SetNameAndIamge is {photoImage.Length} bytes");
+        SetImage(photoImageDisplay);
     }
 
-    private void SetImage(byte[] image)
+    private void SetImage(Image display)
     {
-        Debug.Log(image);
+        
         Texture2D imgTexture = new Texture2D(1, 1);
-        ImageConversion.LoadImage(imgTexture, image);
+        ImageConversion.LoadImage(imgTexture, photoImage);
 
         Sprite imgSprite = Sprite.Create(imgTexture, new Rect(0f, 0f, imgTexture.width, imgTexture.height)
             , new Vector2(0.5f, 0.5f), 100.0f);
-        photoImage.sprite = imgSprite;
+        display.sprite = imgSprite;
+
+        //return Task.CompletedTask; 
     }
 
+    // Changes the file name of the photo data, both client and server-side
     public async void ChangeName()
     {
         // Prevents duplicate polaroids or new ones being created while we add and delete to the database
@@ -45,15 +61,28 @@ public class GalleryPolaroid : MonoBehaviour
         await FirebaseManager.Instance.DeleteStoredData(dbHash);
 
         // Update value in Storage and Database
-        string newName = photoName.text;
-        dbHash = await FirebaseManager.Instance.UploadImageToStorage(photoImage.sprite.texture, newName);
-
-        //inputField.text = "";
+        photoName = photoNameDisplay.text;
+        dbHash = await FirebaseManager.Instance.UploadImageToStorage(photoImageDisplay.sprite.texture, photoName);
 
         // arbitrary Delay because there was an issue with the changingName being set to false too quickly.
         await Task.Delay(1000);
         // Reenables the polaroid-creation process for newly-added data points
         GalleryManager.Instance.changingName = false;
-        //Destroy(this.gameObject);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log("CLICKED");
+        GoFullscreen();
+    }
+
+    // Gets the Fullscreen image and updates it to display this polaroid instance's photo
+    public void GoFullscreen()
+    {
+        GameObject fullScreenPopup = GalleryManager.Instance.fullScreenPopup;
+        Image fullScreenImage = fullScreenPopup.GetComponent<Image>();
+
+        fullScreenPopup.SetActive(true);
+        SetImage(fullScreenImage);
     }
 }

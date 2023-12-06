@@ -707,8 +707,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dbHash: 
-  photoImage: {fileID: 7064245924491664380}
-  photoName: {fileID: 6614384753633170738}
+  photoImageDisplay: {fileID: 7064245924491664380}
+  photoNameDisplay: {fileID: 6614384753633170738}
+  photoName: 
+  photoImage: fc
 --- !u!1 &7662190185017773846
 GameObject:
   m_ObjectHideFlags: 0

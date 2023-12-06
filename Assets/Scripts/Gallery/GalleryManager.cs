@@ -16,6 +16,8 @@ public class GalleryManager : MonoBehaviour
     [SerializeField]
     private GameObject galleryPolaroidPrefab;
 
+    public GameObject fullScreenPopup;
+
     private void Awake()
     {
         if (Instance != null && Instance != this) Destroy(this);
