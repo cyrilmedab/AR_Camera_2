@@ -43,7 +43,6 @@ public class GalleryPolaroid : MonoBehaviour, IPointerClickHandler
         
         Texture2D imgTexture = new Texture2D(1, 1);
         ImageConversion.LoadImage(imgTexture, photoImage);
-        Debug.Log($"The Texture Size is {imgTexture.Size()}");
 
         Sprite imgSprite = Sprite.Create(imgTexture, new Rect(0f, 0f, imgTexture.width, imgTexture.height)
             , new Vector2(0.5f, 0.5f), 100.0f);
